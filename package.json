@@ -1,0 +1,23 @@
+{
+  "name": "PracticaElectron",
+  "version": "1.0.0",
+  "description": "Repositorio de ElectronJs para la creacion de aplicaciones de escritorio Multiplataforma.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fedebenitez-utn/PracticaElectron.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fedebenitez-utn/PracticaElectron/issues"
+  },
+  "homepage": "https://github.com/fedebenitez-utn/PracticaElectron#readme",
+  "dependencies": {
+    "electron": "^9.0.5"
+  }
+}
