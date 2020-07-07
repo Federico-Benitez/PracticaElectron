@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = requiere('electron');
+const { app, BrowserWindow } = require('electron');
 
 const url = require('url');
 const path = require('path');
@@ -10,6 +10,6 @@ app.on('ready' ,() =>{
     mainWindow.loadURL(url.format({
         pathname : path.join(__dirname,'views/index.html'),
         protocol : 'file',
-        slashes: true
+        slashes  : true
     }))
 });
