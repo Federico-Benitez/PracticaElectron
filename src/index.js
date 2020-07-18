@@ -2,6 +2,7 @@ const { app, BrowserWindow, Menu, ipcMain } = require("electron");
 
 const url = require("url");
 const path = require("path");
+
 //solo vamos a usar electron reload para desarrollo no para cuando este en produccion
 if (process.env.NODE_ENV !== "production") {
   require("electron-reload")(__dirname, {
@@ -15,9 +16,8 @@ let newProductWindow;
 app.on("ready", () => {
   mainWindow = new BrowserWindow({
     webPreferences: {
-      preload: path.join(__dirname, "./preload.js"),
-      nodeIntegration: false,
-      enableRemoteModule: false
+      //darle permisos para usar node
+      nodeIntegration: true
     }
   });
   mainWindow.loadURL(
@@ -40,7 +40,10 @@ function createNewProductWindow() {
   newProductWindow = new BrowserWindow({
     width: 400,
     height: 330,
-    title: "Add a new product"
+    title: "Add a new product",
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
   //newProductWindow.setMenu(null); //without menu
   newProductWindow.loadURL(
@@ -57,7 +60,8 @@ function createNewProductWindow() {
 }
 
 ipcMain.on("product:new", (e, newProduct) => {
-  console.log(newProduct);
+  mainWindow.webContents.send("product:new", newProduct);
+  newProductWindow.close();
 });
 
 const templateMenu = [
