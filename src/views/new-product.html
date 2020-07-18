@@ -1,1 +1,67 @@
-<h1>Add Product</h1>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add new Product</title>
+    <link
+      rel="stylesheet"
+      href="https://bootswatch.com/4/lux/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <form class="p-4">
+      <div class="form-grup">
+        <input
+          type="text"
+          id="name"
+          class="form-control"
+          placeholder="Product's Name"
+          autofocus
+        />
+      </div>
+      <div class="form-grup">
+        <input
+          type="text"
+          id="price"
+          class="form-control"
+          placeholder="price"
+        />
+      </div>
+      <div class="form-grup">
+        <input
+          type="text"
+          id="description"
+          class="form-control"
+          placeholder="description"
+        />
+      </div>
+      <button class="btn btn-primary btn-block">
+        Save Product
+      </button>
+    </form>
+
+    <!-- Logic -->
+    <script>
+      const { ipcRenderer } = require("electron");
+
+      const form = document.querySelector("form");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const nameProduct = document.querySelector("#name").value;
+        const priceProduct = document.querySelector("#price").value;
+        const descriptionProduct = document.querySelector("#description").value;
+
+        const newProduct = {
+          name: nameProduct,
+          price: priceProduct,
+          description: descriptionProduct
+        };
+
+        ipcRenderer.send("product:new", newProduct);
+        console.log(nameProduct, priceProduct, descriptionProduct);
+      });
+    </script>
+  </body>
+</html>

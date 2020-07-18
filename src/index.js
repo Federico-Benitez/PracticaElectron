@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu } = require("electron");
+const { app, BrowserWindow, Menu, ipcMain } = require("electron");
 
 const url = require("url");
 const path = require("path");
@@ -13,7 +13,13 @@ let mainWindow;
 let newProductWindow;
 
 app.on("ready", () => {
-  mainWindow = new BrowserWindow({});
+  mainWindow = new BrowserWindow({
+    webPreferences: {
+      preload: path.join(__dirname, "./preload.js"),
+      nodeIntegration: false,
+      enableRemoteModule: false
+    }
+  });
   mainWindow.loadURL(
     url.format({
       pathname: path.join(__dirname, "views/index.html"),
@@ -21,9 +27,13 @@ app.on("ready", () => {
       slashes: true
     })
   );
-  //para modificar el menu de la aplicacion
+  //change menu app
   const mainMenu = Menu.buildFromTemplate(templateMenu);
   Menu.setApplicationMenu(mainMenu);
+  //close all windows
+  mainWindow.on("closed", () => {
+    app.quit();
+  });
 });
 
 function createNewProductWindow() {
@@ -32,6 +42,7 @@ function createNewProductWindow() {
     height: 330,
     title: "Add a new product"
   });
+  //newProductWindow.setMenu(null); //without menu
   newProductWindow.loadURL(
     url.format({
       pathname: path.join(__dirname, "views/new-product.html"),
@@ -39,7 +50,15 @@ function createNewProductWindow() {
       slashes: true
     })
   );
+
+  newProductWindow.on("closed", () => {
+    newProductWindow = null;
+  });
 }
+
+ipcMain.on("product:new", (e, newProduct) => {
+  console.log(newProduct);
+});
 
 const templateMenu = [
   {
@@ -51,7 +70,44 @@ const templateMenu = [
         click() {
           createNewProductWindow();
         }
+      },
+      {
+        label: "Remove All Products",
+        click() {}
+      },
+      {
+        label: "Exit",
+        //check where we are running the app
+        accelerator: process.platform == "darwin" ? "command+Q " : "Ctrl+Q",
+        click() {
+          app.quit();
+        }
       }
     ]
   }
 ];
+
+//to show the name app first if we are running in mac
+if (process.platform === "darwin") {
+  templateMenu.unshift({
+    label: app.getName()
+  });
+}
+//to get development tools on our app
+if (process.env.NODE_ENV !== "production") {
+  templateMenu.push({
+    label: "DevTools",
+    submenu: [
+      {
+        label: "Show/Hide Dev Tools",
+        accelerator: "Ctrl+D",
+        click(item, focusedWindow) {
+          focusedWindow.toggleDevTools();
+        }
+      },
+      {
+        role: "reload"
+      }
+    ]
+  });
+}
