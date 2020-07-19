@@ -2,6 +2,10 @@
 
 Aplicacion de Tienda desarrollada con ElectronJs lista para ser empaquetada en distintas distribuciones
 
+# Screenshot
+
+![](docs/screenshot.png)
+
 ### Pre-requisitos 📋
 
 _Requisitos_
@@ -48,3 +52,9 @@ Ejecutamos el programa
 ```
 npm start
 ```
+
+## Construido con 🛠️
+
+_Menciona las herramientas que utilizaste para crear tu proyecto_
+
+- [Electron](https://www.electronjs.org/) - El framework usado
