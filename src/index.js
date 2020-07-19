@@ -2,6 +2,7 @@ const { app, BrowserWindow, Menu, ipcMain } = require("electron");
 
 const url = require("url");
 const path = require("path");
+const main = require("electron-reload");
 
 //solo vamos a usar electron reload para desarrollo no para cuando este en produccion
 if (process.env.NODE_ENV !== "production") {
@@ -77,7 +78,9 @@ const templateMenu = [
       },
       {
         label: "Remove All Products",
-        click() {}
+        click() {
+          mainWindow.webContents.send("products:remove-all");
+        }
       },
       {
         label: "Exit",
