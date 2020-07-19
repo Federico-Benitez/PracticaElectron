@@ -55,6 +55,6 @@ npm start
 
 ## Construido con 🛠️
 
-_Menciona las herramientas que utilizaste para crear tu proyecto_
+- [NodeJs](https://nodejs.org/es/) - Runtime environment
 
 - [Electron](https://www.electronjs.org/) - El framework usado
