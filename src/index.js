@@ -1,8 +1,9 @@
-const { app, BrowserWindow, Menu, ipcMain } = require("electron");
+const { app, BrowserWindow, Menu, ipcMain, dialog } = require("electron");
 
 const url = require("url");
 const path = require("path");
 const main = require("electron-reload");
+const { toUnicode } = require("punycode");
 
 //solo vamos a usar electron reload para desarrollo no para cuando este en produccion
 if (process.env.NODE_ENV !== "production") {
@@ -13,6 +14,7 @@ if (process.env.NODE_ENV !== "production") {
 
 let mainWindow;
 let newProductWindow;
+let editProductWindow;
 
 app.on("ready", () => {
   mainWindow = new BrowserWindow({
@@ -42,6 +44,7 @@ function createNewProductWindow() {
     width: 400,
     height: 330,
     title: "Add a new product",
+    parent: mainWindow,
     webPreferences: {
       nodeIntegration: true
     }
@@ -63,6 +66,36 @@ function createNewProductWindow() {
 ipcMain.on("product:new", (e, newProduct) => {
   mainWindow.webContents.send("product:new", newProduct);
   newProductWindow.close();
+});
+
+function createNewProductWindowToEdit() {
+  editProductWindow = new BrowserWindow({
+    width: 400,
+    height: 330,
+    title: "Edit product",
+    webPreferences: {
+      nodeIntegration: true
+    }
+  });
+  //newProductWindow.setMenu(null); //without menu
+  editProductWindow.loadURL(
+    url.format({
+      pathname: path.join(__dirname, "views/edit-product.html"),
+      protocol: "file",
+      slashes: true
+    })
+  );
+
+  editProductWindow.on("closed", function () {
+    editProductWindow = null;
+  });
+}
+
+ipcMain.on("products:edit", function (event, ProductToEdit) {
+  console.log(ProductToEdit);
+  createNewProductWindowToEdit();
+  editProductWindow.webContents.send("products:SetValues", ProductToEdit);
+  //mainWindow.webContents.send("product:edit", ProductToEdit);
 });
 
 const templateMenu = [
