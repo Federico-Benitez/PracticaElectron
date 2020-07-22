@@ -3,7 +3,6 @@ const { app, BrowserWindow, Menu, ipcMain, dialog } = require("electron");
 const url = require("url");
 const path = require("path");
 const main = require("electron-reload");
-const { toUnicode } = require("punycode");
 
 //solo vamos a usar electron reload para desarrollo no para cuando este en produccion
 if (process.env.NODE_ENV !== "production") {
@@ -69,7 +68,7 @@ ipcMain.on("product:new", (e, newProduct) => {
 });
 
 ipcMain.on("product:editFinished", (e, newProduct) => {
-  //realizar la busqueda del producto editado para sobreescribir
+  //falta realizar la busqueda del producto editado para sobreescribir
   mainWindow.webContents.send("product:new", newProduct);
   editProductWindow.close();
 });
@@ -96,12 +95,6 @@ function createNewProductWindowToEdit() {
     editProductWindow = null;
   });
 }
-
-// ipcMain.on("products:edit", function (event, ProductToEdit) {
-//   console.log(ProductToEdit);
-//   createNewProductWindowToEdit();
-//   editProductWindow.webContents.send("products:SetValues", ProductToEdit);
-// });
 
 ipcMain.on("products:edit", function (event, ProductToEdit) {
   createNewProductWindowToEdit();
