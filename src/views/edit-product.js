@@ -1,14 +1,12 @@
 const { ipcRenderer } = require("electron");
 
 const form = document.querySelector("form");
+
 //get values from selected
-
-ipcRenderer.on("products:SetValues", function (e, ProductToEdit) {
-  console.log(ProductToEdit);
-
-  //   document.querySelector("#name").value = ProductToEdit.name;
-  //   document.querySelector("#price").value = ProductToEdit.price;
-  //   document.querySelector("#description").value = ProductToEdit.description;
+ipcRenderer.on("products:toEdit", (e, ProductToEdit) => {
+  document.querySelector("#name").value = ProductToEdit.name;
+  document.querySelector("#price").value = ProductToEdit.price;
+  document.querySelector("#description").value = ProductToEdit.description;
 });
 
 //send updated info

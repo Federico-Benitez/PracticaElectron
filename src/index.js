@@ -91,11 +91,17 @@ function createNewProductWindowToEdit() {
   });
 }
 
+// ipcMain.on("products:edit", function (event, ProductToEdit) {
+//   console.log(ProductToEdit);
+//   createNewProductWindowToEdit();
+//   editProductWindow.webContents.send("products:SetValues", ProductToEdit);
+// });
+
 ipcMain.on("products:edit", function (event, ProductToEdit) {
-  console.log(ProductToEdit);
   createNewProductWindowToEdit();
-  editProductWindow.webContents.send("products:SetValues", ProductToEdit);
-  //mainWindow.webContents.send("product:edit", ProductToEdit);
+  setTimeout(() => {
+    editProductWindow.webContents.send("products:toEdit", ProductToEdit);
+  }, 300);
 });
 
 const templateMenu = [
