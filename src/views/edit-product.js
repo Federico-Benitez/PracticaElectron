@@ -21,6 +21,6 @@ form.addEventListener("submit", (e) => {
     description: descriptionProduct
   };
   //send edited
-  ipcRenderer.send("product:new", editedProduct); //buscar a cual tarjeta corresponde
+  ipcRenderer.send("product:editFinished", editedProduct); //buscar a cual tarjeta corresponde
   e.preventDefault();
 });

@@ -68,6 +68,12 @@ ipcMain.on("product:new", (e, newProduct) => {
   newProductWindow.close();
 });
 
+ipcMain.on("product:editFinished", (e, newProduct) => {
+  //realizar la busqueda del producto editado para sobreescribir
+  mainWindow.webContents.send("product:new", newProduct);
+  editProductWindow.close();
+});
+
 function createNewProductWindowToEdit() {
   editProductWindow = new BrowserWindow({
     width: 400,
