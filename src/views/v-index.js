@@ -46,6 +46,8 @@ ipcRenderer.on("product:new", (e, newProduct) => {
         price: priceProduct
       };
       ipcRenderer.send("products:edit", productToEdit);
+      //pasar la carta completa para ser editada
+      console.log(e.target.parentElement.parentElement.childNodes);
     });
   });
 

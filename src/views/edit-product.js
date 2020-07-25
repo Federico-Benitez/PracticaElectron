@@ -9,6 +9,10 @@ ipcRenderer.on("products:toEdit", (e, ProductToEdit) => {
   document.querySelector("#description").value = ProductToEdit.description;
 });
 
+ipcRenderer.on("message-1-reply-for-renderer-1", (texto) => {
+  console.log(texto);
+});
+
 //send updated info
 form.addEventListener("submit", (e) => {
   const nameProduct = document.querySelector("#name").value;

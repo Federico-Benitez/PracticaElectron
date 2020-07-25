@@ -73,34 +73,44 @@ ipcMain.on("product:editFinished", (e, newProduct) => {
   editProductWindow.close();
 });
 
-function createNewProductWindowToEdit() {
-  editProductWindow = new BrowserWindow({
-    width: 400,
-    height: 330,
-    title: "Edit product",
-    webPreferences: {
-      nodeIntegration: true
-    }
-  });
-  //newProductWindow.setMenu(null); //without menu
-  editProductWindow.loadURL(
-    url.format({
-      pathname: path.join(__dirname, "views/edit-product.html"),
-      protocol: "file",
-      slashes: true
-    })
-  );
+function createEditProductWindow2() {
+  return new Promise((resolve, reject) => {
+    editProductWindow = new BrowserWindow({
+      width: 400,
+      height: 330,
+      title: "Edit product",
+      webPreferences: {
+        nodeIntegration: true
+      }
+    });
 
-  editProductWindow.on("closed", function () {
-    editProductWindow = null;
+    editProductWindow.loadURL(
+      url.format({
+        pathname: path.join(__dirname, "views/edit-product.html"),
+        protocol: "file",
+        slashes: true
+      })
+    );
+
+    // Create 'close' listener
+    editProductWindow.on("closed", () => {
+      editProductWindow = null;
+    });
+    // Create 'did-finish-load' listener
+    editProductWindow.webContents.on("did-finish-load", () => {
+      resolve();
+    });
   });
 }
 
 ipcMain.on("products:edit", function (event, ProductToEdit) {
-  createNewProductWindowToEdit();
-  setTimeout(() => {
-    editProductWindow.webContents.send("products:toEdit", ProductToEdit);
-  }, 300);
+  createEditProductWindow2()
+    .then(() => {
+      editProductWindow.webContents.send("products:toEdit", ProductToEdit);
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
 });
 
 const templateMenu = [
