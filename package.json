@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/fedebenitez-utn/PracticaElectron#readme",
   "dependencies": {
-    "electron": "^9.3.0",
+    "electron": "^18.3.7",
     "electron-packager": "^15.0.0",
     "electron-reload": "^1.5.0"
   }
